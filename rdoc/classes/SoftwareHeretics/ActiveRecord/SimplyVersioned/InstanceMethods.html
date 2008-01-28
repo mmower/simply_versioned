@@ -132,31 +132,36 @@ version.
 Pass either a Version instance or a version number.
 </p>
 <p>
-options: <tt>except</tt> specify a list of attributes that are not restored
-(default: created_at, updated_at)
+options:
 </p>
+<ul>
+<li><tt>except</tt> specify a list of attributes that are not restored
+(default: created_at, updated_at)
+
+</li>
+</ul>
           <p><a class="source-toggle" href="#"
             onclick="toggleCode('M000017-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000017-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 86</span>
- 86:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">revert_to_version</span>( <span class="ruby-identifier">version</span>, <span class="ruby-identifier">options</span> = {} )
- 87:           <span class="ruby-identifier">options</span>.<span class="ruby-identifier">reverse_merge!</span>({
- 88:             <span class="ruby-identifier">:except</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:created_at</span>,<span class="ruby-identifier">:updated_at</span>]
- 89:           })
- 90:           
- 91:           <span class="ruby-identifier">version</span> = <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">version</span>.<span class="ruby-identifier">kind_of?</span>( <span class="ruby-constant">Version</span> )
- 92:             <span class="ruby-identifier">version</span>
- 93:           <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">version</span>.<span class="ruby-identifier">kind_of?</span>( <span class="ruby-constant">Fixnum</span> )
- 94:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">find_by_number</span>( <span class="ruby-identifier">version</span> )
- 95:           <span class="ruby-keyword kw">end</span>
- 96:           
- 97:           <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Invalid version (#{version.inspect}) specified!&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">version</span>
- 98:           
- 99:           <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>].<span class="ruby-identifier">map</span>( <span class="ruby-operator">&amp;</span><span class="ruby-identifier">:to_s</span> )
-100:           
-101:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">update_attributes</span>( <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>( <span class="ruby-identifier">version</span>.<span class="ruby-identifier">yaml</span> ).<span class="ruby-identifier">except</span>( <span class="ruby-operator">*</span><span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] ) )
-102:         <span class="ruby-keyword kw">end</span>
+    <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 83</span>
+83:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">revert_to_version</span>( <span class="ruby-identifier">version</span>, <span class="ruby-identifier">options</span> = {} )
+84:           <span class="ruby-identifier">options</span>.<span class="ruby-identifier">reverse_merge!</span>({
+85:             <span class="ruby-identifier">:except</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:created_at</span>,<span class="ruby-identifier">:updated_at</span>]
+86:           })
+87:           
+88:           <span class="ruby-identifier">version</span> = <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">version</span>.<span class="ruby-identifier">kind_of?</span>( <span class="ruby-constant">Version</span> )
+89:             <span class="ruby-identifier">version</span>
+90:           <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">version</span>.<span class="ruby-identifier">kind_of?</span>( <span class="ruby-constant">Fixnum</span> )
+91:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">find_by_number</span>( <span class="ruby-identifier">version</span> )
+92:           <span class="ruby-keyword kw">end</span>
+93:           
+94:           <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Invalid version (#{version.inspect}) specified!&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">version</span>
+95:           
+96:           <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] = <span class="ruby-constant">Array</span>( <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] ).<span class="ruby-identifier">map</span>( <span class="ruby-operator">&amp;</span><span class="ruby-identifier">:to_s</span> )
+97:           
+98:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">update_attributes</span>( <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>( <span class="ruby-identifier">version</span>.<span class="ruby-identifier">yaml</span> ).<span class="ruby-identifier">except</span>( <span class="ruby-operator">*</span><span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] ) )
+99:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -176,10 +181,10 @@ options: <tt>except</tt> specify a list of attributes that are not restored
             onclick="toggleCode('M000019-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000019-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 117</span>
-117:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unversioned?</span>
-118:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-119:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 120</span>
+120:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unversioned?</span>
+121:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+122:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -199,14 +204,14 @@ options: <tt>except</tt> specify a list of attributes that are not restored
             onclick="toggleCode('M000021-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000021-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 125</span>
-125:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">version_number</span>
-126:           <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">empty?</span>
-127:             <span class="ruby-value">0</span>
-128:           <span class="ruby-keyword kw">else</span>
-129:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">current</span>.<span class="ruby-identifier">number</span>
-130:           <span class="ruby-keyword kw">end</span>
-131:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 128</span>
+128:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">version_number</span>
+129:           <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">empty?</span>
+130:             <span class="ruby-value">0</span>
+131:           <span class="ruby-keyword kw">else</span>
+132:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">current</span>.<span class="ruby-identifier">number</span>
+133:           <span class="ruby-keyword kw">end</span>
+134:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -226,10 +231,10 @@ options: <tt>except</tt> specify a list of attributes that are not restored
             onclick="toggleCode('M000020-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000020-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 121</span>
-121:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">versioned?</span>
-122:           <span class="ruby-operator">!</span><span class="ruby-identifier">unversioned?</span>
-123:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 124</span>
+124:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">versioned?</span>
+125:           <span class="ruby-operator">!</span><span class="ruby-identifier">unversioned?</span>
+126:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -250,20 +255,27 @@ Invoke the supplied block passing the receiver as the sole block argument
 with versioning enabled or disabled depending upon the value of the
 <tt>enabled</tt> parameter for the duration of the block.
 </p>
+<p>
+Example:
+</p>
+<p>
+<tt> thing.with_versioning( params[:should_version] == &quot;yes&quot; ) {
+save! } </tt>
+</p>
           <p><a class="source-toggle" href="#"
             onclick="toggleCode('M000018-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000018-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 107</span>
-107:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">with_versioning</span>( <span class="ruby-identifier">enabled</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span> )
-108:           <span class="ruby-identifier">versioning_was_enabled</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled?</span>
-109:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled</span> = <span class="ruby-identifier">enabled</span>
-110:           <span class="ruby-keyword kw">begin</span>
-111:             <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>( <span class="ruby-keyword kw">self</span> )
-112:           <span class="ruby-keyword kw">ensure</span>
-113:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled</span> = <span class="ruby-identifier">versioning_was_enabled</span>
-114:           <span class="ruby-keyword kw">end</span>
-115:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 110</span>
+110:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">with_versioning</span>( <span class="ruby-identifier">enabled</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span> )
+111:           <span class="ruby-identifier">versioning_was_enabled</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled?</span>
+112:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled</span> = <span class="ruby-identifier">enabled</span>
+113:           <span class="ruby-keyword kw">begin</span>
+114:             <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>( <span class="ruby-keyword kw">self</span> )
+115:           <span class="ruby-keyword kw">ensure</span>
+116:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled</span> = <span class="ruby-identifier">versioning_was_enabled</span>
+117:           <span class="ruby-keyword kw">end</span>
+118:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -285,15 +297,15 @@ with versioning enabled or disabled depending upon the value of the
             onclick="toggleCode('M000022-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000022-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 135</span>
-135:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">simply_versioned_create_version</span>
-136:           <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled?</span>
-137:             <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">create</span>( <span class="ruby-identifier">:yaml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">except</span>( <span class="ruby-operator">*</span><span class="ruby-identifier">simply_versioned_excluded_columns</span> ).<span class="ruby-identifier">to_yaml</span> )
-138:               <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">clean_old_versions</span>( <span class="ruby-identifier">simply_versioned_keep_limit</span>.<span class="ruby-identifier">to_i</span> ) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">simply_versioned_keep_limit</span>
-139:             <span class="ruby-keyword kw">end</span>
-140:           <span class="ruby-keyword kw">end</span>
-141:           <span class="ruby-keyword kw">true</span>
-142:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 138</span>
+138:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">simply_versioned_create_version</span>
+139:           <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled?</span>
+140:             <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">create</span>( <span class="ruby-identifier">:yaml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">except</span>( <span class="ruby-operator">*</span><span class="ruby-identifier">simply_versioned_excluded_columns</span> ).<span class="ruby-identifier">to_yaml</span> )
+141:               <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">clean_old_versions</span>( <span class="ruby-identifier">simply_versioned_keep_limit</span>.<span class="ruby-identifier">to_i</span> ) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">simply_versioned_keep_limit</span>
+142:             <span class="ruby-keyword kw">end</span>
+143:           <span class="ruby-keyword kw">end</span>
+144:           <span class="ruby-keyword kw">true</span>
+145:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

@@ -131,12 +131,12 @@ all excess older versions.
             onclick="toggleCode('M000008-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000008-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 167</span>
-167:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clean_old_versions</span>( <span class="ruby-identifier">versions_to_keep</span> )
-168:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">'number &lt;= ?'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">maximum</span>( <span class="ruby-identifier">:number</span> ) <span class="ruby-operator">-</span> <span class="ruby-identifier">versions_to_keep</span> ] ).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">version</span><span class="ruby-operator">|</span>
-169:             <span class="ruby-identifier">version</span>.<span class="ruby-identifier">destroy</span>
-170:           <span class="ruby-keyword kw">end</span>
-171:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 170</span>
+170:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clean_old_versions</span>( <span class="ruby-identifier">versions_to_keep</span> )
+171:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">'number &lt;= ?'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">maximum</span>( <span class="ruby-identifier">:number</span> ) <span class="ruby-operator">-</span> <span class="ruby-identifier">versions_to_keep</span> ] ).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">version</span><span class="ruby-operator">|</span>
+172:             <span class="ruby-identifier">version</span>.<span class="ruby-identifier">destroy</span>
+173:           <span class="ruby-keyword kw">end</span>
+174:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -174,10 +174,10 @@ corresponding to this model.
             onclick="toggleCode('M000006-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000006-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 161</span>
-161:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_version</span>
-162:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number DESC'</span> )
-163:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 164</span>
+164:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_version</span>
+165:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number DESC'</span> )
+166:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -215,10 +215,10 @@ corresponding to this model.
             onclick="toggleCode('M000004-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000004-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 155</span>
-155:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first_version</span>
-156:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number ASC'</span> )
-157:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 158</span>
+158:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first_version</span>
+159:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number ASC'</span> )
+160:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -256,10 +256,10 @@ version number.
             onclick="toggleCode('M000002-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000002-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 149</span>
-149:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_version</span>( <span class="ruby-identifier">number</span> )
-150:           <span class="ruby-identifier">find_by_number</span>( <span class="ruby-identifier">number</span> )
-151:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 152</span>
+152:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_version</span>( <span class="ruby-identifier">number</span> )
+153:           <span class="ruby-identifier">find_by_number</span>( <span class="ruby-identifier">number</span> )
+154:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -297,10 +297,10 @@ href="VersionsProxyMethods.html#M000011">next</a> higher version
             onclick="toggleCode('M000010-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000010-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 175</span>
-175:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">next_version</span>( <span class="ruby-identifier">number</span> )
-176:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number ASC'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">&quot;number &gt; ?&quot;</span>, <span class="ruby-identifier">number</span> ] )
-177:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 178</span>
+178:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">next_version</span>( <span class="ruby-identifier">number</span> )
+179:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number ASC'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">&quot;number &gt; ?&quot;</span>, <span class="ruby-identifier">number</span> ] )
+180:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>
@@ -338,10 +338,10 @@ href="VersionsProxyMethods.html#M000011">next</a> lower version
             onclick="toggleCode('M000012-source');return false;">[Source]</a></p>
           <div class="method-source-code" id="M000012-source">
 <pre>
-     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 181</span>
-181:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">previous_version</span>( <span class="ruby-identifier">number</span> )
-182:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number DESC'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">&quot;number &lt; ?&quot;</span>, <span class="ruby-identifier">number</span> ] )
-183:         <span class="ruby-keyword kw">end</span>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 184</span>
+184:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">previous_version</span>( <span class="ruby-identifier">number</span> )
+185:           <span class="ruby-identifier">find</span>( <span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'number DESC'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-value str">&quot;number &lt; ?&quot;</span>, <span class="ruby-identifier">number</span> ] )
+186:         <span class="ruby-keyword kw">end</span>
 </pre>
           </div>
         </div>

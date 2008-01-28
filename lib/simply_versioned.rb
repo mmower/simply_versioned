@@ -1,4 +1,4 @@
-# SimplyVersioned 0.9.3
+# SimplyVersioned 1.0.0
 #
 # Simple ActiveRecord versioning
 # Copyright (c) 2007,2008 Matt Mower <self@mattmower.com>
@@ -24,15 +24,12 @@ module SoftwareHeretics
         # the +versions+ association.
         #
         # Options:
-        # +limit+ - specifies the number of old versions to keep (default = nil, never delete old versions)
-        # +automatic+ - controls whether versions are created automatically (default = true, save versions)
-        # +exclude+ - specify columns that will not be saved (default = [], save all columns)
+        # * +limit+ - specifies the number of old versions to keep (default = nil, never delete old versions)
+        # * +automatic+ - controls whether versions are created automatically (default = true, save versions)
+        # * +exclude+ - specify columns that will not be saved (default = [], save all columns)
         #
-        # To save the record without creating a version either set +versioning_enabled+ to false
-        # on the model before calling save or, alternatively, use +without_versioning+ and save
-        # the model from its block.
-        #
-        
+        # To save a model without creating a new version it is recommended to use with +with_versioning+
+        # method rather than changing +versioning_enabled+ for the entire model.
         def simply_versioned( options = {} )
           bad_keys = options.keys - [:keep,:automatic,:exclude]
           raise SimplyVersioned::BadOptions.new( bad_keys ) unless bad_keys.empty?
@@ -81,7 +78,7 @@ module SoftwareHeretics
         # Pass either a Version instance or a version number.
         #
         # options:
-        # +except+ specify a list of attributes that are not restored (default: created_at, updated_at)
+        # * +except+ specify a list of attributes that are not restored (default: created_at, updated_at)
         #
         def revert_to_version( version, options = {} )
           options.reverse_merge!({
@@ -96,7 +93,7 @@ module SoftwareHeretics
           
           raise "Invalid version (#{version.inspect}) specified!" unless version
           
-          options[:except] = options[:except].map( &:to_s )
+          options[:except] = Array( options[:except] ).map( &:to_s )
           
           self.update_attributes( YAML::load( version.yaml ).except( *options[:except] ) )
         end
@@ -104,6 +101,12 @@ module SoftwareHeretics
         # Invoke the supplied block passing the receiver as the sole block argument with
         # versioning enabled or disabled depending upon the value of the +enabled+ parameter
         # for the duration of the block.
+        #
+        # Example:
+        # 
+        # <tt>
+        # thing.with_versioning( params[:should_version] == "yes" ) { save! }
+        # </tt>
         def with_versioning( enabled, &block )
           versioning_was_enabled = self.versioning_enabled?
           self.versioning_enabled = enabled
@@ -114,16 +117,19 @@ module SoftwareHeretics
           end
         end
         
+        # Return +true+ if the model has not been versioned yet.
         def unversioned?
-          self.versions.nil? || self.versions.size == 0
+          self.versions.nil? || self.versions.empty?
         end
         
+        # Return +true+ if the model has been versioned.
         def versioned?
           !unversioned?
         end
         
+        # Returns 0 for unversioned models, 1 for newly created models, and so on.
         def version_number
-          if self.versions.empty?
+          if self.unversioned?
             0
           else
             self.versions.current.number
@@ -132,7 +138,7 @@ module SoftwareHeretics
         
         protected
         
-        def simply_versioned_create_version
+        def simply_versioned_create_version #:nodoc:
           if self.versioning_enabled?
             if self.versions.create( :yaml => self.attributes.except( *simply_versioned_excluded_columns ).to_yaml )
               self.versions.clean_old_versions( simply_versioned_keep_limit.to_i ) if simply_versioned_keep_limit
@@ -143,9 +149,10 @@ module SoftwareHeretics
         
       end
 
+      # Methods added to the +versions+ collection of a versioned model.
       module VersionsProxyMethods
         
-        # Get the Version instance corresponding to this models for the specified version number.
+        # Get the +Version+ instance corresponding to this specified version number for this model instance.
         def get_version( number )
           find_by_number( number )
         end
@@ -184,7 +191,7 @@ module SoftwareHeretics
         alias_method :previous, :previous_version
       end
 
-      def self.included( receiver )
+      def self.included( receiver ) #:nodoc:
         receiver.extend         ClassMethods
         receiver.send :include, InstanceMethods
       end

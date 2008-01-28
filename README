@@ -1,20 +1,20 @@
 SimplyVersioned
 ===============
 
-Release:	0.9.3
+Release:	1.0.0
 Date:			28-01-2008
 Author:		Matt Mower <self@mattmower.com>
 
 SimplyVersioned is a simple, non-invasive, approach to versioning ActiveRecord models.
 
-SimplyVersioned does not require any structural change to the models to be versioned and requires only one versions table to be created (a migration generator is supplied with the plugin) regardless of the number of models being versioned.
+SimplyVersioned does not require any structural change to the models to be versioned and requires only one versions table to be created (a migration generator is supplied with the plugin) for the application, regardless of the number of models being versioned.
 
 The plugin introduces a 'Version' ActiveRecord model (that reflects changes to model attributes) to which versioned models are polymorphically associated. Version records store the model information as a YAML hash.
 	
 SimplyVersioned meets a simple need for model versioning. If your needs are more complex maybe try Rick Olsen's acts_as_versioned (http://svn.techno-weenie.net/projects/plugins/acts_as_versioned/).
 	
-SimplyVersioned is (so far) actively tested with Rails 2.0.2 and Ruby 1.8.6p111 on MacOSX.
-
+SimplyVersioned is (so far) actively tested with Rails 2.0.2 and Ruby 1.8.6
+	
 Usage
 =====
 
@@ -123,6 +123,7 @@ Usage
 	
 Thanks to:
 
+	Chris Wanstrath (http://ozmm.org/) for useful feedback and GitHub
 	Josh Susser (http://blog.hasmanythrough.com/) for useful suggestions and feedback
 	Rick Olson (http://techno-weenie.net/) for all the many plugins whose code i've read
 	

@@ -1,4 +1,4 @@
-# SimplyVersioned 0.9.3
+# SimplyVersioned 1.0.0
 #
 # Simple ActiveRecord versioning
 # Copyright (c) 2007,2008 Matt Mower <self@mattmower.com>
@@ -36,7 +36,7 @@ class Version < ActiveRecord::Base #:nodoc:
   end
 
 protected
-  def before_create
+  def before_create #:nodoc:
     if versionable.unversioned?
       self.number = 1
     else
