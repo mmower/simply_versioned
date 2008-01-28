@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: SoftwareHeretics::ActiveRecord::SimplyVersioned::InstanceMethods</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">SoftwareHeretics::ActiveRecord::SimplyVersioned::InstanceMethods</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../../files/lib/simply_versioned_rb.html">
+                lib/simply_versioned.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Methods that will be defined on the <a
+href="../../ActiveRecord.html">ActiveRecord</a> model being versioned
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000017">revert_to_version</a>&nbsp;&nbsp;
+      <a href="#M000022">simply_versioned_create_version</a>&nbsp;&nbsp;
+      <a href="#M000019">unversioned?</a>&nbsp;&nbsp;
+      <a href="#M000021">version_number</a>&nbsp;&nbsp;
+      <a href="#M000020">versioned?</a>&nbsp;&nbsp;
+      <a href="#M000018">with_versioning</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000017" class="method-detail">
+        <a name="M000017"></a>
+
+        <div class="method-heading">
+          <a href="#M000017" class="method-signature">
+          <span class="method-name">revert_to_version</span><span class="method-args">( version, options = {} )</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Revert the attributes of this model to their values as of an earlier
+version.
+</p>
+<p>
+Pass either a Version instance or a version number.
+</p>
+<p>
+options: <tt>except</tt> specify a list of attributes that are not restored
+(default: created_at, updated_at)
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000017-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000017-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 86</span>
+ 86:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">revert_to_version</span>( <span class="ruby-identifier">version</span>, <span class="ruby-identifier">options</span> = {} )
+ 87:           <span class="ruby-identifier">options</span>.<span class="ruby-identifier">reverse_merge!</span>({
+ 88:             <span class="ruby-identifier">:except</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:created_at</span>,<span class="ruby-identifier">:updated_at</span>]
+ 89:           })
+ 90:           
+ 91:           <span class="ruby-identifier">version</span> = <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">version</span>.<span class="ruby-identifier">kind_of?</span>( <span class="ruby-constant">Version</span> )
+ 92:             <span class="ruby-identifier">version</span>
+ 93:           <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">version</span>.<span class="ruby-identifier">kind_of?</span>( <span class="ruby-constant">Fixnum</span> )
+ 94:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">find_by_number</span>( <span class="ruby-identifier">version</span> )
+ 95:           <span class="ruby-keyword kw">end</span>
+ 96:           
+ 97:           <span class="ruby-identifier">raise</span> <span class="ruby-node">&quot;Invalid version (#{version.inspect}) specified!&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">version</span>
+ 98:           
+ 99:           <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>].<span class="ruby-identifier">map</span>( <span class="ruby-operator">&amp;</span><span class="ruby-identifier">:to_s</span> )
+100:           
+101:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">update_attributes</span>( <span class="ruby-constant">YAML</span><span class="ruby-operator">::</span><span class="ruby-identifier">load</span>( <span class="ruby-identifier">version</span>.<span class="ruby-identifier">yaml</span> ).<span class="ruby-identifier">except</span>( <span class="ruby-operator">*</span><span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] ) )
+102:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000019" class="method-detail">
+        <a name="M000019"></a>
+
+        <div class="method-heading">
+          <a href="#M000019" class="method-signature">
+          <span class="method-name">unversioned?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000019-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000019-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 117</span>
+117:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unversioned?</span>
+118:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+119:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000021" class="method-detail">
+        <a name="M000021"></a>
+
+        <div class="method-heading">
+          <a href="#M000021" class="method-signature">
+          <span class="method-name">version_number</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000021-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000021-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 125</span>
+125:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">version_number</span>
+126:           <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">empty?</span>
+127:             <span class="ruby-value">0</span>
+128:           <span class="ruby-keyword kw">else</span>
+129:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">current</span>.<span class="ruby-identifier">number</span>
+130:           <span class="ruby-keyword kw">end</span>
+131:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000020" class="method-detail">
+        <a name="M000020"></a>
+
+        <div class="method-heading">
+          <a href="#M000020" class="method-signature">
+          <span class="method-name">versioned?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000020-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000020-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 121</span>
+121:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">versioned?</span>
+122:           <span class="ruby-operator">!</span><span class="ruby-identifier">unversioned?</span>
+123:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000018" class="method-detail">
+        <a name="M000018"></a>
+
+        <div class="method-heading">
+          <a href="#M000018" class="method-signature">
+          <span class="method-name">with_versioning</span><span class="method-args">( enabled, &amp;block )</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Invoke the supplied block passing the receiver as the sole block argument
+with versioning enabled or disabled depending upon the value of the
+<tt>enabled</tt> parameter for the duration of the block.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000018-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000018-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 107</span>
+107:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">with_versioning</span>( <span class="ruby-identifier">enabled</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span> )
+108:           <span class="ruby-identifier">versioning_was_enabled</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled?</span>
+109:           <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled</span> = <span class="ruby-identifier">enabled</span>
+110:           <span class="ruby-keyword kw">begin</span>
+111:             <span class="ruby-identifier">block</span>.<span class="ruby-identifier">call</span>( <span class="ruby-keyword kw">self</span> )
+112:           <span class="ruby-keyword kw">ensure</span>
+113:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled</span> = <span class="ruby-identifier">versioning_was_enabled</span>
+114:           <span class="ruby-keyword kw">end</span>
+115:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Protected Instance methods</h3>
+
+      <div id="method-M000022" class="method-detail">
+        <a name="M000022"></a>
+
+        <div class="method-heading">
+          <a href="#M000022" class="method-signature">
+          <span class="method-name">simply_versioned_create_version</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000022-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000022-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/simply_versioned.rb, line 135</span>
+135:         <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">simply_versioned_create_version</span>
+136:           <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versioning_enabled?</span>
+137:             <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">create</span>( <span class="ruby-identifier">:yaml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">attributes</span>.<span class="ruby-identifier">except</span>( <span class="ruby-operator">*</span><span class="ruby-identifier">simply_versioned_excluded_columns</span> ).<span class="ruby-identifier">to_yaml</span> )
+138:               <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">versions</span>.<span class="ruby-identifier">clean_old_versions</span>( <span class="ruby-identifier">simply_versioned_keep_limit</span>.<span class="ruby-identifier">to_i</span> ) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">simply_versioned_keep_limit</span>
+139:             <span class="ruby-keyword kw">end</span>
+140:           <span class="ruby-keyword kw">end</span>
+141:           <span class="ruby-keyword kw">true</span>
+142:         <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>
